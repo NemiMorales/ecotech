@@ -1,0 +1,8 @@
+-- TODO: crear las tablas de la base de datos "ecotech":
+--   departamento
+--   empleado
+--   proyecto
+--   empleado_proyecto
+--   registro_tiempo
+--   usuario
+--   consulta_api
