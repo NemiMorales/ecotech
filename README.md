@@ -78,5 +78,5 @@ Cada uso de IA se registra en `docs/ia/` usando la plantilla `docs/ia/PLANTILLA.
 
 ## Integrantes
 
-- _______________________
-- _______________________
+- Noemí Morales
+- Francisco Torres
