@@ -1,7 +1,7 @@
 # Bitácora IA 06: Menú, login y manejo de errores
 
 > **Nota de transparencia:** esta rama la desarrolló Claude a pedido de Noemí ("puedes hacer lo
-> que falta"). Las decisiones quedan como **ADOPTAR provisorio** hasta que el equipo las revise en el PR.
+> que falta"). Noemí confirmó las decisiones el 18-11-2026.
 
 ## Registro N° 6
 
@@ -50,7 +50,7 @@ sin internet y con cuentas bloqueadas). Esto encontró:
 
 ### Decisión
 
-- [x] ADOPTAR (provisorio, pendiente de revisión del equipo en el PR)
+- [x] ADOPTAR — confirmado por Noemí Morales el 18-11-2026
 - [ ] MODIFICAR
 - [ ] DESCARTAR
 

@@ -2,9 +2,8 @@
 
 > **Nota de transparencia:** en esta sesión el equipo delegó las decisiones de diseño en la IA
 > por falta de tiempo ("adoptamos según lo que veas"). Todas las clases quedaron marcadas como
-> `# IA: adoptado` de forma **provisoria**. Antes del merge a `develop`, el equipo debe revisar
-> cada clase y, si cambia algo, actualizar aquí la decisión a MODIFICAR y el comentario del código
-> a `# IA: modificado - <motivo>`.
+> `# IA: adoptado`. Noemí confirmó la decisión el 18-11-2026; las diferencias con el UML quedan
+> en `docs/modelo-uml-vs-codigo.md`.
 
 ---
 
@@ -55,7 +54,7 @@ Archivos: `ecotech/excepciones.py`, `ecotech/modelos/_validaciones.py`, `rol.py`
 
 ### Decisión
 
-- [x] ADOPTAR (provisoria, decisión delegada en la IA; pendiente de revisión del equipo en el PR)
+- [x] ADOPTAR — confirmado por Noemí Morales el 18-11-2026
 - [ ] MODIFICAR
 - [ ] DESCARTAR
 
@@ -69,5 +68,5 @@ Archivos: `ecotech/excepciones.py`, `ecotech/modelos/_validaciones.py`, `rol.py`
 ### Código final o commit
 
 ```
-(pendiente: commit lo realiza el equipo)
+Rama `feature/modelo-poo`, integrada con el PR #1 (commit `d95e5ef`).
 ```
