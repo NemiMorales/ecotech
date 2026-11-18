@@ -91,6 +91,17 @@ class Usuario:
     def bloqueado(self) -> bool:
         return self.__bloqueado
 
+    # --- Persistencia (uso interno de UsuarioRepositorio) ---
+    # IA: adoptado - integración con MySQL
+    def _restaurar_estado(self, intentos_fallidos: int, bloqueado: bool) -> None:
+        """Repone el estado de login guardado en la BD (sobrevive a reiniciar el programa)."""
+        self.__intentos_fallidos = max(0, int(intentos_fallidos))
+        self.__bloqueado = bool(bloqueado)
+
+    def _hash_para_persistir(self) -> str:
+        """Entrega el hash SOLO al repositorio para guardarlo. Nunca se muestra en pantalla."""
+        return self.__password_hash
+
     # --- Métodos de seguridad del UML ---
     # IA: modificado - aporte de Fran; el límite de intentos se lee del .env (antes fijo en 5)
     def autenticar(self, password: str) -> bool:

@@ -45,6 +45,13 @@ class RegistroTiempo:
             return False
         return 0 < horas <= self.HORAS_MAXIMAS_DIA
 
+    # IA: adoptado - integración con MySQL: el ID real lo entrega AUTO_INCREMENT
+    def _fijar_id(self, nuevo_id: int) -> None:
+        """Uso interno del repositorio: reemplaza el ID provisorio por el de la base de datos."""
+        if isinstance(nuevo_id, bool) or not isinstance(nuevo_id, int) or nuevo_id <= 0:
+            raise DatoInvalidoError("El ID debe ser un entero positivo.")
+        self.__id_registro = nuevo_id
+
     # --- Accesores (solo lectura) ---
     @property
     def id_registro(self) -> int:
