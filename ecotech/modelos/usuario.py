@@ -22,10 +22,10 @@ _PATRON_HASH_BCRYPT = re.compile(r"^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$")
 
 # Permisos por rol (propuesta inicial, ajustar a las opciones reales del menú).
 PERMISOS_POR_ROL: dict[Rol, frozenset[str]] = {
-    Rol.ADMIN_RRHH: frozenset(
-        {"empleados", "departamentos", "proyectos", "registros", "informes", "usuarios", "apis"}
-    ),
-    Rol.GERENTE: frozenset({"empleados", "proyectos", "registros", "informes", "apis"}),
+# "proyectos" = ver; "gestion_proyectos" = crear, asignar y eliminar.
+    Rol.ADMIN_RRHH: frozenset({"empleados", "departamentos", "proyectos", "gestion_proyectos",
+                               "registros", "informes", "usuarios", "apis"}),
+    Rol.GERENTE: frozenset({"empleados", "proyectos", "gestion_proyectos", "registros", "informes", "apis"}),
     Rol.EMPLEADO: frozenset({"proyectos", "registros"}),
 }
 
