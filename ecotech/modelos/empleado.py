@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import date
 from typing import TYPE_CHECKING
 
-from ecotech.excepciones import OperacionNoPermitidaError
+from ecotech.excepciones import DatoInvalidoError, OperacionNoPermitidaError
 from ecotech.modelos._validaciones import validar_fecha, validar_positivo
 from ecotech.modelos.persona import Persona
 from ecotech.modelos.rol import Rol
@@ -58,6 +58,13 @@ class Empleado(Persona):
     @property
     def usuario(self) -> Usuario | None:
         return self.__usuario
+
+    # IA: adoptado - integración con MySQL: el ID real lo entrega AUTO_INCREMENT
+    def _fijar_id(self, nuevo_id: int) -> None:
+        """Uso interno del repositorio: reemplaza el ID provisorio por el de la base de datos."""
+        if isinstance(nuevo_id, bool) or not isinstance(nuevo_id, int) or nuevo_id <= 0:
+            raise DatoInvalidoError("El ID debe ser un entero positivo.")
+        self.__id_empleado = nuevo_id
 
     # --- Salario protegido: solo se lee/modifica a través de ServicioCifrado ---
     def get_salario(self, cifrado: ServicioCifrado) -> float:

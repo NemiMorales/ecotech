@@ -22,10 +22,10 @@ _PATRON_HASH_BCRYPT = re.compile(r"^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$")
 
 # Permisos por rol (propuesta inicial, ajustar a las opciones reales del menú).
 PERMISOS_POR_ROL: dict[Rol, frozenset[str]] = {
-    Rol.ADMIN_RRHH: frozenset(
-        {"empleados", "departamentos", "proyectos", "registros", "informes", "usuarios", "apis"}
-    ),
-    Rol.GERENTE: frozenset({"empleados", "proyectos", "registros", "informes", "apis"}),
+# "proyectos" = ver; "gestion_proyectos" = crear, asignar y eliminar.
+    Rol.ADMIN_RRHH: frozenset({"empleados", "departamentos", "proyectos", "gestion_proyectos",
+                               "registros", "informes", "usuarios", "apis"}),
+    Rol.GERENTE: frozenset({"empleados", "proyectos", "gestion_proyectos", "registros", "informes", "apis"}),
     Rol.EMPLEADO: frozenset({"proyectos", "registros"}),
 }
 
@@ -90,6 +90,17 @@ class Usuario:
     @property
     def bloqueado(self) -> bool:
         return self.__bloqueado
+
+    # --- Persistencia (uso interno de UsuarioRepositorio) ---
+    # IA: adoptado - integración con MySQL
+    def _restaurar_estado(self, intentos_fallidos: int, bloqueado: bool) -> None:
+        """Repone el estado de login guardado en la BD (sobrevive a reiniciar el programa)."""
+        self.__intentos_fallidos = max(0, int(intentos_fallidos))
+        self.__bloqueado = bool(bloqueado)
+
+    def _hash_para_persistir(self) -> str:
+        """Entrega el hash SOLO al repositorio para guardarlo. Nunca se muestra en pantalla."""
+        return self.__password_hash
 
     # --- Métodos de seguridad del UML ---
     # IA: modificado - aporte de Fran; el límite de intentos se lee del .env (antes fijo en 5)
