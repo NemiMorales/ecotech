@@ -111,4 +111,4 @@ Todas están marcadas en el código con `# IA:` y el equipo las debe revisar en 
 
 ## 6. Código final
 
-Rama `feature/auth` → **PR #2 hacia `develop`**, revisado por Fran antes del merge.
+Rama `feature/auth` → **PR #2 hacia `develop`**. Se mergeó sin revisión formal de Fran en GitHub: queda pendiente que la revise y complete su prompt (sección 3).

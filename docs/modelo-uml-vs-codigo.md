@@ -53,7 +53,7 @@ Fuente de verdad: diagrama de clases final (Informe ES1, Figura 4 / Anexo A).
 | Elemento | Motivo |
 |---|---|
 | `Usuario.__bloqueado` y `bloqueado` | El UML tiene `intentosFallidos`; el bloqueo es la consecuencia de superar el límite. |
-| `PERMISOS_POR_ROL` | Implementa `tienePermiso(modulo)`. **Decisión:** `Modulo` se representa como texto (`"empleados"`, `"apis"`…), no como clase nueva. |
+| `PERMISOS_POR_ROL` | Implementa `tienePermiso(modulo)`. **Decisión:** `Modulo` se representa como texto (`"empleados"`, `"apis"`…), no como clase nueva. `"proyectos"` permite ver y `"gestion_proyectos"` crear, asignar y eliminar. |
 | `Sesion` (`ecotech/seguridad/sesion.py`) | Controla que solo un usuario autenticado y con permiso acceda al menú y a las APIs (criterio 3.1.2.G.15). |
 
 ## Del modelo a las tablas (MySQL)
