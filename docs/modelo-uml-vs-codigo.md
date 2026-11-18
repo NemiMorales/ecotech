@@ -36,7 +36,11 @@ Fuente de verdad: diagrama de clases final (Informe ES1, Figura 4 / Anexo A).
 | Parámetro `cifrado` en el constructor de Empleado y Gerente | El UML recibe `salario: double`, pero el salario debe guardarse cifrado y no hay otra forma de cifrarlo al crear el objeto. |
 | `Empleado.__usuario` y `crear_usuario()` | Necesarios para que el Empleado sea dueño de su Usuario (composición ◆). |
 | `_asignar_departamento()` y `_asignar_departamento_a_cargo()` | Métodos de uso interno (un guion bajo) para que Departamento mantenga la relación en ambos sentidos sin exponer setters públicos. |
-| `__contador_id` en Departamento, Proyecto y RegistroTiempo | El UML no recibe el ID en el constructor. Es provisorio: cuando se integre MySQL, el ID lo dará `AUTO_INCREMENT`. |
+| `__contador_id` en Departamento, Proyecto y RegistroTiempo | El UML no recibe el ID en el constructor. Es un ID provisorio en memoria. |
+| `_fijar_id()` en Empleado, Departamento, Proyecto y RegistroTiempo | Uso interno del repositorio: reemplaza el ID provisorio por el de `AUTO_INCREMENT` de MySQL. |
+| `Proyecto.ciudad` y `Proyecto.moneda` | Unidad 3: la ciudad se usa para consultar el clima y la moneda para calcular pagos internacionales. |
+| `Proyecto.buscar_asignado(id)` | Al leer de la BD, el mismo empleado puede llegar como objetos distintos; entrega el que guarda el proyecto. |
+| `Usuario._restaurar_estado()` y `_hash_para_persistir()` | Uso interno de `UsuarioRepositorio` para guardar y recuperar el bloqueo y el hash. No se usan desde el menú. |
 | `ecotech/modelos/_validaciones.py` | Reglas de validación comunes escritas una sola vez (evita duplicar código). |
 | Excepciones `EcoTechError`, `DatoInvalidoError`, `OperacionNoPermitidaError` | Errores de dominio propios; `DatoInvalidoError` también es `ValueError`. |
 | RegistroTiempo exige que el empleado esté asignado al proyecto | Evita registrar horas en proyectos ajenos (problema de "errores de asignación" del caso). |
@@ -51,3 +55,14 @@ Fuente de verdad: diagrama de clases final (Informe ES1, Figura 4 / Anexo A).
 | `Usuario.__bloqueado` y `bloqueado` | El UML tiene `intentosFallidos`; el bloqueo es la consecuencia de superar el límite. |
 | `PERMISOS_POR_ROL` | Implementa `tienePermiso(modulo)`. **Decisión:** `Modulo` se representa como texto (`"empleados"`, `"apis"`…), no como clase nueva. |
 | `Sesion` (`ecotech/seguridad/sesion.py`) | Controla que solo un usuario autenticado y con permiso acceda al menú y a las APIs (criterio 3.1.2.G.15). |
+
+## Del modelo a las tablas (MySQL)
+
+| Relación UML | Tabla / columna | Regla `ON DELETE` | Qué significa |
+|---|---|---|---|
+| Herencia Persona → Empleado → Gerente | `empleado.tipo` (`EMPLEADO` / `GERENTE`) | — | Una sola tabla: Persona es abstracta y Gerente no agrega columnas. |
+| Agregación Departamento ◇ Empleado | `empleado.id_departamento` | `SET NULL` | Si se borra el departamento, el empleado sigue existiendo. |
+| Departamento → 1 Gerente | `departamento.id_gerente` `NOT NULL UNIQUE` | `RESTRICT` | Siempre hay gerente y uno no dirige dos departamentos. |
+| Proyecto N:N Empleado | `empleado_proyecto` | `CASCADE` | Borrar un proyecto borra solo sus asignaciones. |
+| RegistroTiempo → Empleado / Proyecto | `registro_tiempo.id_empleado`, `id_proyecto` | `RESTRICT` | No se pierde el historial de horas. |
+| Composición Empleado ◆ Usuario | `usuario.id_empleado` `UNIQUE` | `CASCADE` | Sin empleado no hay cuenta (sin cuentas huérfanas). |
