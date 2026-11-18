@@ -1,7 +1,7 @@
 # Bitácora IA 05: Consumo de APIs externas
 
 > **Nota de transparencia:** esta rama la desarrolló Claude a pedido de Noemí ("puedes hacer lo
-> que falta"). Las decisiones quedan como **ADOPTAR provisorio** hasta que el equipo las revise en el PR.
+> que falta"). Noemí confirmó las decisiones el 18-11-2026.
 
 ## Registro N° 5
 
@@ -49,7 +49,7 @@
 
 ### Decisión
 
-- [x] ADOPTAR (provisorio, pendiente de revisión del equipo en el PR)
+- [x] ADOPTAR — confirmado por Noemí Morales el 18-11-2026
 - [ ] MODIFICAR
 - [ ] DESCARTAR
 

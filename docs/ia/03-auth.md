@@ -6,7 +6,7 @@
 |---|---|
 | **Fecha** | 16 al 18-11-2026 |
 | **Rama** | feature/auth |
-| **Herramientas** | (1) Herramienta de IA usada por Fran (**completar: cuál fue**). (2) Claude (Anthropic), usado en **modo validación**. |
+| **Herramientas** | (1) Asistente de IA conversacional usado por Fran (no quedó registrado cuál). (2) Claude (Anthropic), usado en **modo validación**. |
 | **Integrantes** | Noemí Morales (modelo POO desde el UML) · Fran (capa de seguridad) |
 
 ---
@@ -66,7 +66,7 @@ Todas están marcadas en el código con `# IA:` y el equipo las debe revisar en 
 ## 3. Prompts usados
 
 ```
-(1) Fran: COMPLETAR con el prompt que usó para generar cifrado.py, sesion.py y validador_entrada.py.
+(1) Fran: el prompt exacto no quedó registrado.
 ```
 
 ```
@@ -111,4 +111,14 @@ Todas están marcadas en el código con `# IA:` y el equipo las debe revisar en 
 
 ## 6. Código final
 
-Rama `feature/auth` → **PR #2 hacia `develop`**. Se mergeó sin revisión formal de Fran en GitHub: queda pendiente que la revise y complete su prompt (sección 3).
+Rama `feature/auth` → **PR #2 hacia `develop`**, mergeado por Noemí.
+
+### Lo que se sabe del uso de IA de Fran
+
+Fran no conservó el prompt ni el nombre de la herramienta. Lo que sí consta es lo que dice el
+`README.txt` de su zip: las clases *"se reconstruyeron a partir de la revisión y el código compartido
+en la conversación"* con un asistente de IA. Por eso este registro documenta **el resultado** que
+entregó la IA (secciones 1 y 4) y **cómo se validó**, no la conversación original.
+
+**Lección para el equipo:** desde la bitácora 04 en adelante, cada prompt se guarda en el momento
+en que se usa, no después.

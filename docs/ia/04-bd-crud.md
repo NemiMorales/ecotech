@@ -1,8 +1,7 @@
 # Bitácora IA 04: Base de datos y CRUD
 
 > **Nota de transparencia:** esta rama la desarrolló Claude a pedido de Noemí ("puedes hacer lo
-> que falta") a partir del modelo UML ya implementado. Las decisiones quedan como **ADOPTAR
-> provisorio**: el equipo debe revisarlas en el PR y, si cambia algo, actualizar esta bitácora.
+> que falta"). Noemí confirmó las decisiones el 18-11-2026.
 
 ## Registro N° 4
 
@@ -50,7 +49,7 @@
 
 ### Decisión
 
-- [x] ADOPTAR (provisorio, pendiente de revisión del equipo en el PR)
+- [x] ADOPTAR — confirmado por Noemí Morales el 18-11-2026
 - [ ] MODIFICAR
 - [ ] DESCARTAR
 
