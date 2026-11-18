@@ -1,7 +1,8 @@
 """Validaciones básicas reutilizadas por todas las clases del modelo (evita duplicar reglas)."""
 
+import math
 import re
-from datetime import date
+from datetime import date, datetime
 
 from ecotech.excepciones import DatoInvalidoError
 
@@ -23,7 +24,7 @@ def validar_texto(valor: str, campo: str, max_largo: int = 100) -> str:
 def validar_email(valor: str) -> str:
     """Valida el formato básico usuario@dominio.ext."""
     valor = validar_texto(valor, "Email", 120)
-    if not _PATRON_EMAIL.match(valor):
+    if not _PATRON_EMAIL.fullmatch(valor):
         raise DatoInvalidoError("Email con formato inválido.")
     return valor.lower()
 
@@ -31,7 +32,7 @@ def validar_email(valor: str) -> str:
 def validar_telefono(valor: str) -> str:
     """Acepta entre 8 y 15 dígitos, con '+' inicial y espacios opcionales."""
     valor = validar_texto(valor, "Teléfono", 20)
-    if not _PATRON_TELEFONO.match(valor):
+    if not _PATRON_TELEFONO.fullmatch(valor):
         raise DatoInvalidoError("Teléfono inválido (8 a 15 dígitos).")
     return valor
 
@@ -40,14 +41,16 @@ def validar_positivo(valor: float, campo: str) -> float:
     """Valida que sea un número mayor que 0 (bool se rechaza aunque sea subclase de int)."""
     if isinstance(valor, bool) or not isinstance(valor, (int, float)):
         raise DatoInvalidoError(f"{campo} debe ser numérico.")
-    if valor <= 0:
+    # IA: modificado - aporte de Fran: NaN e infinito pasaban como números válidos
+    if not math.isfinite(valor) or valor <= 0:
         raise DatoInvalidoError(f"{campo} debe ser mayor que 0.")
     return float(valor)
 
 
 def validar_fecha(valor: date, campo: str) -> date:
     """Valida que el valor sea un objeto date (no un texto)."""
-    if not isinstance(valor, date):
+    # datetime es subclase de date: se rechaza para no guardar horas donde va solo la fecha
+    if isinstance(valor, datetime) or not isinstance(valor, date):
         raise DatoInvalidoError(f"{campo} debe ser una fecha (datetime.date).")
     return valor
 
