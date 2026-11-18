@@ -26,7 +26,7 @@ Fuente de verdad: diagrama de clases final (Informe ES1, Figura 4 / Anexo A).
 | Departamento | `ecotech/modelos/departamento.py` | `__id_departamento`, `__nombre`, `__gerente`, `__empleados` | Agregación `Departamento 0..1 ◇ 0..* Empleado`; asociación `Departamento 0..1 → 1 Gerente` | Agregación: guarda una lista de **referencias** a empleados creados afuera; `remover_empleado()` no los destruye. Bidireccional: avisa al empleado con `e._asignar_departamento(self)`. `asignar_empleado()` retorna `False` si el empleado ya tiene departamento (RF03). Asociación con Gerente: el constructor lo exige; `cambiar_gerente()` impide que un gerente dirija dos departamentos. `empleados` devuelve una copia. |
 | Proyecto | `ecotech/modelos/proyecto.py` | `__id_proyecto`, `__nombre`, `__descripcion`, `__fecha_inicio`, `__empleados_asignados` | Asociación N:N `Proyecto 0..* → 0..* Empleado` | Lista de referencias en Proyecto (según el sentido de la flecha). `esta_asignado()` evita duplicados; `asignar_empleado()` / `desasignar_empleado()` retornan `bool`. |
 | RegistroTiempo | `ecotech/modelos/registro_tiempo.py` | `__id_registro`, `__fecha`, `__horas`, `__descripcion`, `__empleado`, `__proyecto` | Asociación `0..* → 1 Empleado` y `0..* → 1 Proyecto` | El constructor exige un `Empleado` y un `Proyecto` (multiplicidad 1). No es composición: el registro se conserva aunque el empleado sea desasignado. `__validar_horas()` es privado y rechaza ≤ 0 o > 24. Sin setters. |
-| Usuario | `ecotech/modelos/usuario.py` | `__nombre_usuario`, `__password_hash`, `__intentos_fallidos`, `__rol`, `__empleado` | Composición `Empleado 1 ◆ 0..1 Usuario`; asociación `Usuario → Rol` | Lo crea solo el Empleado con `empleado.crear_usuario(...)` (dueño del ciclo de vida, máximo uno). Solo acepta un hash bcrypt; no hay accesor para el hash. `autenticar`, `cambiar_password` y `tiene_permiso` quedan como TODO para la etapa de seguridad. |
+| Usuario | `ecotech/modelos/usuario.py` | `__nombre_usuario`, `__password_hash`, `__intentos_fallidos`, `__rol`, `__empleado` | Composición `Empleado 1 ◆ 0..1 Usuario`; asociación `Usuario → Rol` | Lo crea solo el Empleado con `empleado.crear_usuario(...)` (dueño del ciclo de vida, máximo uno). Solo acepta un hash bcrypt; no hay accesor para el hash. `autenticar()` verifica con `ServicioCifrado.verificar_password` y bloquea la cuenta al llegar a `MAX_INTENTOS_LOGIN` (del `.env`). `cambiar_password()` exige la clave actual y guarda solo el nuevo hash. `tiene_permiso()` consulta `PERMISOS_POR_ROL`. |
 | Rol «enumeration» | `ecotech/modelos/rol.py` | `ADMIN_RRHH`, `GERENTE`, `EMPLEADO` | Usado por Usuario | `class Rol(Enum)`. El administrador es un valor del Enum, no una subclase de Persona. |
 
 ## Elementos agregados que no están en el UML
@@ -41,6 +41,13 @@ Fuente de verdad: diagrama de clases final (Informe ES1, Figura 4 / Anexo A).
 | Excepciones `EcoTechError`, `DatoInvalidoError`, `OperacionNoPermitidaError` | Errores de dominio propios; `DatoInvalidoError` también es `ValueError`. |
 | RegistroTiempo exige que el empleado esté asignado al proyecto | Evita registrar horas en proyectos ajenos (problema de "errores de asignación" del caso). |
 
-## Pendiente de decidir
+| ServicioCifrado | `ecotech/seguridad/cifrado.py` | `__cifrador` (Fernet) | Usado por Empleado (`getSalario(c)`) y Usuario | Fernet (reversible) para el salario; bcrypt (hash con salt, no reversible) para contraseñas. La clave se lee de `FERNET_KEY` en el `.env` con `desde_entorno()`. |
+| ValidadorEntrada | `ecotech/seguridad/validador.py` | — (métodos estáticos) | Usado por el menú | Reutiliza las reglas de `modelos/_validaciones.py` y agrega `sanitizar()` y `validar_credenciales()`. |
 
-- `Usuario.tienePermiso(modulo: Modulo)`: el tipo `Modulo` no está definido en el diagrama.
+## Elementos de seguridad agregados que no están en el UML
+
+| Elemento | Motivo |
+|---|---|
+| `Usuario.__bloqueado` y `bloqueado` | El UML tiene `intentosFallidos`; el bloqueo es la consecuencia de superar el límite. |
+| `PERMISOS_POR_ROL` | Implementa `tienePermiso(modulo)`. **Decisión:** `Modulo` se representa como texto (`"empleados"`, `"apis"`…), no como clase nueva. |
+| `Sesion` (`ecotech/seguridad/sesion.py`) | Controla que solo un usuario autenticado y con permiso acceda al menú y a las APIs (criterio 3.1.2.G.15). |
